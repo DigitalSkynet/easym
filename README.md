@@ -1,6 +1,6 @@
-# easym
+# Easym
 Project Management Integrator
-
+This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.7.3.
 #Demo
 
 For demo go to https://digitalskynet.com/easym/
@@ -9,13 +9,11 @@ For demo go to https://digitalskynet.com/easym/
 
 There is now implementation for asana, once connected display all the active tasks assigned to current user in all the user's workspaces.
 
-*Planning to improve asana integration
-*Integrate with Trello
-*Integrate with Jira
+Planning to improve asana integration
+Integrate with Trello
+Integrate with Jira
 
-# Easym
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.7.3.
 
 ## Development server
 
