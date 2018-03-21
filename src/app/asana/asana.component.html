@@ -1,0 +1,31 @@
+<div class="row dashboard">
+  <!-- <h1>Users</h1> -->
+  <!-- <div *ngFor="let user of asanaUsers;">
+      <a href="https://app.asana.com/0/{{user.id}}/list" target="_blank">{{ user.name }}</a>
+  </div> -->
+  <div class="loader" *ngIf="loading"></div>
+  <div class="row" *ngIf="!loading">
+    <div *ngFor="let workspace of workspaces;" class="col-sm col-md-6 col-lg-4 workspace" [hidden]="!workspace.tasks || workspace.tasks.length == 0">
+      <h4>
+        <a href="https://app.asana.com/0/{{workspace.id}}/list" target="_blank">
+          {{ workspace.name }}
+        </a>
+      </h4>
+      <div *ngFor="let task of workspace.tasks;" class="task">
+        <div>
+            <a href="https://app.asana.com/0/{{workspace.id}}/{{task.id}}" target="_blank">
+              {{ task.name }}
+              <i class="glyphicon glyphicon-asterisk"></i>
+            </a>
+        </div>
+        <div>
+          <span *ngIf="task.due_on" class="due">
+            <i class="fa fa-calendar"></i>
+            {{task.due_on}}
+          </span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

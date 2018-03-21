@@ -1,0 +1,57 @@
+
+@import "src/styles";
+.dashboard
+{
+  background-color: $background-color;
+  padding: 20px;
+
+  $font-color-asna: #060930;
+
+  .workspace{
+    text-align: left;
+
+    h4 {
+      font-size: $font-size-h6;
+      font-weight: bold;
+
+      a {
+        color: $font-color-asna;
+      }
+    }
+
+    .task {
+      @extend .rounded;
+      margin-right: 10px;
+      padding: 5px;
+      font-size: $font-size-small;
+      margin: 5px;
+      background-color: white;
+      -webkit-box-shadow: 3px -2px 84px -17px rgba(0,0,0,0.9);
+      -moz-box-shadow: 3px -2px 84px -17px rgba(0,0,0,0.9);
+      box-shadow: 3px -2px 84px -17px rgba(0,0,0,0.9);
+      color: $font-color-asna;
+      font-weight: bold;
+      a {
+        color: $font-color-asna;
+      }
+
+      .due {
+        @extend .rounded;
+        -webkit-box-shadow: inset 10px 60px 176px -56px rgba(0,0,0,0.52);
+        -moz-box-shadow: inset 10px 60px 176px -56px rgba(0,0,0,0.52);
+        box-shadow: inset 10px 60px 176px -56px rgba(0,0,0,0.52);
+        padding: 3px;
+        display: inline-block;
+        font-size: smaller;
+        color: #bd2130;
+      }
+    }
+
+    .project{
+      font-size: small;
+      margin-right: 10px;
+    }
+  }
+}
+
+
