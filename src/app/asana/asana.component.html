@@ -4,28 +4,34 @@
       <a href="https://app.asana.com/0/{{user.id}}/list" target="_blank">{{ user.name }}</a>
   </div> -->
   <div class="loader" *ngIf="loading"></div>
-  <div class="row" *ngIf="!loading">
-    <div *ngFor="let workspace of workspaces;" class="col-sm col-md-6 col-lg-4 workspace" [hidden]="!workspace.tasks || workspace.tasks.length == 0">
-      <h4>
-        <a href="https://app.asana.com/0/{{workspace.id}}/list" target="_blank">
-          {{ workspace.name }}
-        </a>
-      </h4>
-      <div *ngFor="let task of workspace.tasks;" class="task">
-        <div>
-            <a href="https://app.asana.com/0/{{workspace.id}}/{{task.id}}" target="_blank">
-              {{ task.name }}
-              <i class="glyphicon glyphicon-asterisk"></i>
-            </a>
+  <div *ngIf="!loading">
+    <div class="form-check pull-left">
+      <input type="checkbox" class="form-check-input" id="exampleCheck1" [checked]="showEmptyWorkspaces" (change)="showEmptyWorkspaces = !showEmptyWorkspaces" />
+      <label class="form-check-label" for="exampleCheck1">Show workspaces with no tasks</label>
+    </div>
+    <div class="row col-sm-12" >
+      <div *ngFor="let workspace of workspaces;" class="col col-sm-3 workspace" [hidden]="!isWorkspaceVisible(workspace)">
+        <h4>
+          <a href="https://app.asana.com/0/{{workspace.id}}/list" target="_blank">
+            {{ workspace.name }}
+          </a>
+        </h4>
+        <div *ngFor="let task of workspace.tasks;" class="task">
+          <div>
+              <a href="https://app.asana.com/0/{{workspace.id}}/{{task.id}}" target="_blank">
+                {{ task.name }}
+                <i class="glyphicon glyphicon-asterisk"></i>
+              </a>
+          </div>
+          <div>
+            <span *ngIf="task.due_on" class="due">
+              <i class="fa fa-calendar"></i>
+              {{task.due_on}}
+            </span>
+          </div>
         </div>
-        <div>
-          <span *ngIf="task.due_on" class="due">
-            <i class="fa fa-calendar"></i>
-            {{task.due_on}}
-          </span>
-        </div>
-      </div>
 
+      </div>
     </div>
   </div>
 </div>

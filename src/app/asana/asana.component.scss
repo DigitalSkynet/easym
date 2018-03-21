@@ -9,6 +9,9 @@
 
   .workspace{
     text-align: left;
+    min-width: 33.3%;
+    border: 1px solid black;
+    padding: 10px;
 
     h4 {
       font-size: $font-size-h6;
