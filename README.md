@@ -1,5 +1,17 @@
 # easym
-Project Management integrator
+Project Management Integrator
+
+#Demo
+
+For demo go to https://digitalskynet.com/easym/
+
+#Supported Systems
+
+There is now implementation for asana, once connected display all the active tasks assigned to current user in all the user's workspaces.
+
+*Planning to improve asana integration
+*Integrate with Trello
+*Integrate with Jira
 
 # Easym
 
