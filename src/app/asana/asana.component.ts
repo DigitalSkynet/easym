@@ -32,6 +32,8 @@ export class AsanaComponent implements OnInit {
   loading = false;
   client = null;
   showEmptyWorkspaces: false;
+  infoMessage = '';
+  infoWorkspacesLoaded = 0;
   oauthData = null;
   oauth = {
     clientId: '598248304930817',
@@ -91,7 +93,8 @@ export class AsanaComponent implements OnInit {
     const tasksPromises = [];
     const that = this;
     that.loading = true;
-
+    that.infoMessage = `Loading tasks...`;
+    that.infoWorkspacesLoaded = 0;
     for (const workspace of this.workspaces) {
       const taskPromise = this.loadTasks(workspace);
       tasksPromises.push(taskPromise);
@@ -99,6 +102,7 @@ export class AsanaComponent implements OnInit {
     Promise.all(tasksPromises).then(value => {
       that.loading = false;
       that.workspaces = that.workspaces.sort((a, b) => that.sortWorkspaces(a, b));
+      that.infoMessage = `Sorting workspaces...`;
     }, reason => {
       that.loading = false;
         that.handleRefreshToken();
@@ -118,11 +122,12 @@ export class AsanaComponent implements OnInit {
 
     const tasksPromise = new Promise((resolve, reject) => {
       this.client.workspaces.tasks(query, function (errTasks, tasks) {
+        that.infoMessage = `Loading tasks ${that.infoWorkspacesLoaded}/${that.workspaces.length}...`;
         if (tasks) {
           workspace.tasks = tasks.sort((a, b) => that.sortTasks(a, b));
+          that.infoWorkspacesLoaded++;
           resolve();
         } else {
-
           const errorMessage = errTasks.result.errors[0].message;
           if (errorMessage.startsWith('assignee: Not a recognized ID:')) {
             workspace.notMember = true;
@@ -156,12 +161,14 @@ export class AsanaComponent implements OnInit {
   loadUsers() {
     const that = this;
     that.loading = true;
+    that.infoMessage = 'Loading users...';
     that.client.users.me(function (errMe, me) {
       that.me = me;
       that.client.users.list(function(err, users) {
         if (users) {
           that.users = users;
           const user = users.filter(x => x.id === me.id)[0];
+          that.infoMessage = 'Users are loaded!';
           that.changeUser(user);
         } else {
           that.handleRefreshToken();
@@ -176,13 +183,17 @@ export class AsanaComponent implements OnInit {
         this.currentUser = user;
         this.loadTasksForAllWorkspaces();
       }
+    } else {
+      alert('User not found');
     }
   }
 
   ngOnInit() {
     const that = this;
     that.loading = true;
+    that.infoMessage = 'Loading workspaces...';
     that.loadWorspaces().then(function(response) {
+      that.infoMessage = 'Workspaces are loaded!';
       that.loadUsers();
     }, function(error) {
       that.loading = false;

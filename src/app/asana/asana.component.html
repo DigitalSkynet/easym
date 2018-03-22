@@ -1,16 +1,21 @@
-<div class="row dashboard">
-  <div class="loader" *ngIf="loading"></div>
-  <div *ngIf="!loading">
-    <div class="row">
-          <div class="col">
-            <div ngbDropdown class="d-inline-block pull-left">
-              <button class="btn btn-outline-primary" id="dropDownUsers" ngbDropdownToggle>{{currentUser.name}}</button>
-              <div ngbDropdownMenu aria-labelledby="dropDownUsers">
-                <button *ngFor="let user of users;" ngFor class="dropdown-item" (click)="changeUser(user);">{{user.name}}</button>
-              </div>
-            </div>
+<div class="row dashboard" [ngClass]="{'h-100': loading}">
+  <div class="col-12" *ngIf="currentUser">
+      <div class="col-12">
+        <div ngbDropdown class="d-inline-block pull-left">
+          <button class="btn btn-outline-primary" id="dropDownUsers" ngbDropdownToggle>{{currentUser.name}}</button>
+          <div ngbDropdownMenu aria-labelledby="dropDownUsers">
+            <button *ngFor="let user of users;" ngFor class="dropdown-item" (click)="changeUser(user);">{{user.name}}</button>
           </div>
+        </div>
+      </div>
+  </div>
+  <div class="row justify-content-center align-items-center col-12 h-100 loading-bar" *ngIf="loading">
+    <div class="col-md-auto">
+        <div class="loader" ></div>
+        <span>{{infoMessage}}</span>
     </div>
+  </div>
+  <div *ngIf="!loading" class="col-12">
     <div class="form-check pull-left">
       <input type="checkbox" class="form-check-input" id="exampleCheck1" [checked]="showEmptyWorkspaces" (change)="showEmptyWorkspaces = !showEmptyWorkspaces" />
       <label class="form-check-label" for="exampleCheck1">Show workspaces with no tasks</label>
@@ -19,7 +24,7 @@
       <div *ngFor="let workspace of workspaces;" class="col col-12 col-md-4 col-lg-3 workspace" [hidden]="!isWorkspaceVisible(workspace)">
         <h4>
           <a href="https://app.asana.com/0/{{workspace.id}}/list" target="_blank">
-            {{ workspace.name }}
+            {{ workspace.name }} ({{workspace.tasks.length}})
           </a>
         </h4>
         <div *ngIf="workspace.notMember" class="alert alert-warning">
