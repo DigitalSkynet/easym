@@ -1,21 +1,30 @@
 <div class="row dashboard">
-  <!-- <h1>Users</h1> -->
-  <!-- <div *ngFor="let user of asanaUsers;">
-      <a href="https://app.asana.com/0/{{user.id}}/list" target="_blank">{{ user.name }}</a>
-  </div> -->
   <div class="loader" *ngIf="loading"></div>
   <div *ngIf="!loading">
+    <div class="row">
+          <div class="col">
+            <div ngbDropdown class="d-inline-block pull-left">
+              <button class="btn btn-outline-primary" id="dropDownUsers" ngbDropdownToggle>{{currentUser.name}}</button>
+              <div ngbDropdownMenu aria-labelledby="dropDownUsers">
+                <button *ngFor="let user of users;" ngFor class="dropdown-item" (click)="changeUser(user);">{{user.name}}</button>
+              </div>
+            </div>
+          </div>
+    </div>
     <div class="form-check pull-left">
       <input type="checkbox" class="form-check-input" id="exampleCheck1" [checked]="showEmptyWorkspaces" (change)="showEmptyWorkspaces = !showEmptyWorkspaces" />
       <label class="form-check-label" for="exampleCheck1">Show workspaces with no tasks</label>
     </div>
-    <div class="row col-sm-12" >
-      <div *ngFor="let workspace of workspaces;" class="col col-sm-3 workspace" [hidden]="!isWorkspaceVisible(workspace)">
+    <div class="row col-12" >
+      <div *ngFor="let workspace of workspaces;" class="col col-12 col-md-4 col-lg-3 workspace" [hidden]="!isWorkspaceVisible(workspace)">
         <h4>
           <a href="https://app.asana.com/0/{{workspace.id}}/list" target="_blank">
             {{ workspace.name }}
           </a>
         </h4>
+        <div *ngIf="workspace.notMember" class="alert alert-warning">
+          Not a member
+        </div>
         <div *ngFor="let task of workspace.tasks;" class="task">
           <div>
               <a href="https://app.asana.com/0/{{workspace.id}}/{{task.id}}" target="_blank">
