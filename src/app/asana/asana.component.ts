@@ -63,15 +63,15 @@ export class AsanaComponent implements OnInit {
     let aId = 0;
     let bId = 0;
 
-    if (a.projects[0]) {
-      aId = a.projects[0];
+    if (a.due) {
+      aId = a.due.getTime();
     }
 
-    if (b.projects[0]) {
-      bId = b.projects[0];
+    if (b.due) {
+      bId = b.due.getTime();
     }
 
-    return this.sort(aId, bId);
+    return this.sort(bId, aId);
   }
 
   private sortWorkspaces(a, b) {
@@ -86,7 +86,7 @@ export class AsanaComponent implements OnInit {
       bId--;
     }
 
-    return this.sort(aId, bId);
+    return this.sort(bId, aId);
   }
 
   loadTasksForAllWorkspaces() {
@@ -115,17 +115,36 @@ export class AsanaComponent implements OnInit {
       'workspace': workspace.id,
       'completed_since': 'now',
       'assignee': that.currentUser.id,
-      'opt_fields': 'id,name,created_at,completed,projects,tags,due_on,custom_fields'
+      'opt_fields': 'id,name,created_at,completed,projects,tags,due_on,due_at,custom_fields'
     };
     workspace.notMember = false;
     workspace.tasks = [];
 
     const tasksPromise = new Promise((resolve, reject) => {
       this.client.workspaces.tasks(query, function (errTasks, tasks) {
+        that.infoWorkspacesLoaded++;
         that.infoMessage = `Loading tasks ${that.infoWorkspacesLoaded}/${that.workspaces.length}...`;
         if (tasks) {
+          tasks.forEach(task => {
+            const now = new Date();
+            if (task.due_on) {
+              let date = task.due_on;
+              if (task.due_at) {
+                date = task.due_at;
+              }
+              task.due = new Date(Date.parse(date));
+              if (!task.due_at) {
+                task.due.setHours(23, 59, 59, 999);
+              }
+
+              if (now < task.due) {
+                task.dueClass = 'upcomming';
+              } else {
+                task.dueClass = 'overdue';
+              }
+            }
+          });
           workspace.tasks = tasks.sort((a, b) => that.sortTasks(a, b));
-          that.infoWorkspacesLoaded++;
           resolve();
         } else {
           const errorMessage = errTasks.result.errors[0].message;

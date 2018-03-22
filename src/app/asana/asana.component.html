@@ -6,7 +6,9 @@
           <div ngbDropdownMenu aria-labelledby="dropDownUsers">
             <button *ngFor="let user of users;" ngFor class="dropdown-item" (click)="changeUser(user);">{{user.name}}</button>
           </div>
+          <button type="button" class="btn btn-primary" (click)="loadTasksForAllWorkspaces();">Reload</button>
         </div>
+
       </div>
   </div>
   <div class="row justify-content-center align-items-center col-12 h-100 loading-bar" *ngIf="loading">
@@ -38,10 +40,14 @@
               </a>
           </div>
           <div>
-            <span *ngIf="task.due_on" class="due">
+            <span *ngIf="task.due_on" class="due {{task.dueClass}}">
               <i class="fa fa-calendar"></i>
-              {{task.due_on}}
+              {{task.due | date: 'shortDate'}}
             </span>
+            <span *ngIf="task.due_at" class="due time {{task.dueClass}}">
+                <i class="fa fa-clock-o"></i>
+                {{task.due | date: 'shortTime'}}
+              </span>
           </div>
         </div>
 

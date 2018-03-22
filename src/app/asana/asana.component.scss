@@ -46,7 +46,18 @@
         padding: 3px;
         display: inline-block;
         font-size: smaller;
-        color: #bd2130;
+
+        &.upcomming {
+          color: #0ba82d;
+        }
+
+        &.overdue {
+          color: #bd2130;
+        }
+
+        &.close-to-overdue {
+          color: #e2750e;
+        }
       }
     }
 
