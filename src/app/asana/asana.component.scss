@@ -8,6 +8,7 @@
   $font-color-asna: #060930;
 
   .workspace{
+    @extend .rounded;
     text-align: left;
     min-width: 33.3%;
     border: 1px solid black;
@@ -24,25 +25,29 @@
 
     .task {
       @extend .rounded;
+      @extend .box-shadow;
       margin-right: 10px;
       padding: 5px;
       font-size: $font-size-small;
       margin: 5px;
       background-color: white;
-      -webkit-box-shadow: 3px -2px 84px -17px rgba(0,0,0,0.9);
-      -moz-box-shadow: 3px -2px 84px -17px rgba(0,0,0,0.9);
-      box-shadow: 3px -2px 84px -17px rgba(0,0,0,0.9);
+
       color: $font-color-asna;
       font-weight: bold;
       a {
         color: $font-color-asna;
       }
 
+      .close {
+        font-size: 25px;
+        &:hover{
+          color: #0ba82d;
+        }
+      }
+
       .due {
         @extend .rounded;
-        -webkit-box-shadow: inset 10px 60px 176px -56px rgba(0,0,0,0.52);
-        -moz-box-shadow: inset 10px 60px 176px -56px rgba(0,0,0,0.52);
-        box-shadow: inset 10px 60px 176px -56px rgba(0,0,0,0.52);
+        @extend .box-shadow;
         padding: 3px;
         display: inline-block;
         font-size: smaller;

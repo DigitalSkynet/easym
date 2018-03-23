@@ -60,8 +60,8 @@ export class AsanaComponent implements OnInit {
   }
 
   private sortTasks(a, b) {
-    let aId = 0;
-    let bId = 0;
+    let aId = Number.MAX_VALUE;
+    let bId = Number.MAX_VALUE;
 
     if (a.due) {
       aId = a.due.getTime();
@@ -71,7 +71,7 @@ export class AsanaComponent implements OnInit {
       bId = b.due.getTime();
     }
 
-    return this.sort(bId, aId);
+    return this.sort(aId, bId);
   }
 
   private sortWorkspaces(a, b) {
@@ -89,14 +89,29 @@ export class AsanaComponent implements OnInit {
     return this.sort(bId, aId);
   }
 
+  closeTask(worspace, task) {
+    const that = this;
+    const data = {
+      completed: true
+    };
+    that.client.tasks.edit(task.id, data, function(err, result) {
+      if (!err) {
+        const index = worspace.tasks.indexOf(task, 0);
+        if (index > -1) {
+          worspace.tasks.splice(index, 1);
+        }
+      }
+    });
+  }
+
   loadTasksForAllWorkspaces() {
     const tasksPromises = [];
     const that = this;
     that.loading = true;
-    that.infoMessage = `Loading tasks...`;
+    that.infoMessage = `Feeding unicorns...`;
     that.infoWorkspacesLoaded = 0;
-    for (const workspace of this.workspaces) {
-      const taskPromise = this.loadTasks(workspace);
+    for (const workspace of that.workspaces) {
+      const taskPromise = that.loadTasks(workspace);
       tasksPromises.push(taskPromise);
     }
     Promise.all(tasksPromises).then(value => {
@@ -123,7 +138,7 @@ export class AsanaComponent implements OnInit {
     const tasksPromise = new Promise((resolve, reject) => {
       this.client.workspaces.tasks(query, function (errTasks, tasks) {
         that.infoWorkspacesLoaded++;
-        that.infoMessage = `Loading tasks ${that.infoWorkspacesLoaded}/${that.workspaces.length}...`;
+        that.infoMessage = `Feeding unicorns ${(that.infoWorkspacesLoaded / that.workspaces.length * 100).toFixed(0)}%...`;
         if (tasks) {
           tasks.forEach(task => {
             const now = new Date();
@@ -180,14 +195,14 @@ export class AsanaComponent implements OnInit {
   loadUsers() {
     const that = this;
     that.loading = true;
-    that.infoMessage = 'Loading users...';
+    that.infoMessage = 'Training wizards...';
     that.client.users.me(function (errMe, me) {
       that.me = me;
       that.client.users.list(function(err, users) {
         if (users) {
           that.users = users;
           const user = users.filter(x => x.id === me.id)[0];
-          that.infoMessage = 'Users are loaded!';
+          that.infoMessage = 'Casting spells';
           that.changeUser(user);
         } else {
           that.handleRefreshToken();
@@ -210,9 +225,8 @@ export class AsanaComponent implements OnInit {
   ngOnInit() {
     const that = this;
     that.loading = true;
-    that.infoMessage = 'Loading workspaces...';
+    that.infoMessage = 'Preparing magic forest...';
     that.loadWorspaces().then(function(response) {
-      that.infoMessage = 'Workspaces are loaded!';
       that.loadUsers();
     }, function(error) {
       that.loading = false;
