@@ -37,7 +37,7 @@
               <a href="https://app.asana.com/0/{{workspace.id}}/{{task.id}}" target="_blank">
                 {{ task.name }}
               </a>
-              <i class="fa fa-check-circle-o close" (click)="closeTask(workspace, task);"></i>
+              <i class="fa fa-check-circle-o close pull-right" (click)="closeTask(workspace, task);"></i>
           </div>
           <div>
             <span *ngIf="task.due_on" class="due {{task.dueClass}}">
